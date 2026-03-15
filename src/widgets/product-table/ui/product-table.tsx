@@ -1,6 +1,7 @@
 import { authFetch } from '@/entities/auth'
 import { useProducts } from '@/entities/products'
 import { columns } from '@/entities/products/ui/columns'
+import { SearchProduct } from '@/features/search-products'
 import { DataTable } from '@/shared/ui/data-table'
 import {
   Pagination,
@@ -21,12 +22,14 @@ export const ProductTable = () => {
   const page = parseInt(searchParams.get('page') || '1')
   const sort = searchParams.get('sortBy') || null
   const order = (searchParams.get('order') || 'asc') as SortDirection
+  const query = searchParams.get('q') || null
 
   const { data, isLoading, isFetching } = useProducts(authFetch, {
     countPerPage: LIMIT,
     page,
     sort,
     order,
+    query,
   })
   const totalPages = Math.ceil((data?.total || 0) / LIMIT)
 
@@ -54,6 +57,9 @@ export const ProductTable = () => {
   return (
     <div className='p-4'>
       <h1 className='text-2xl font-bold mb-4'>Товары</h1>
+      <div className='mb-4'>
+        <SearchProduct />
+      </div>
       <div style={{ opacity: isFetching ? 0.5 : 1 }}>
         <DataTable
           columns={columns}

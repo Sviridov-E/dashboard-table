@@ -1,17 +1,31 @@
+import { authFetch } from '@/entities/auth'
+import { useUserStore } from '@/entities/user'
 import { validation } from '@/shared/lib'
 import { Button } from '@/shared/ui'
 import { Checkbox } from '@/shared/ui/checkbox'
 import { Field } from '@/shared/ui/field'
 import { Label } from '@/shared/ui/label'
+import { useEffect } from 'react'
 import { Controller, useForm, type SubmitHandler } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
+import { toast } from 'sonner'
+import { login } from './lib/login'
 import { SignInInput } from './ui/SignInInput'
 
 interface AuthFormValues {
-  login: string
+  username: string
   password: string
   remember: boolean
 }
 
+// @ts-expect-error temporary
+window.isAuth = () => {
+  try {
+    authFetch('/api/auth/me').then(console.log)
+  } catch (e) {
+    console.error(e)
+  }
+}
 export const AuthPage = () => {
   const {
     register,
@@ -20,8 +34,31 @@ export const AuthPage = () => {
     formState: { errors },
   } = useForm<AuthFormValues>()
 
-  const onSubmit: SubmitHandler<AuthFormValues> = values => {
-    console.log(values)
+  const { user } = useUserStore()
+
+  useEffect(() => {
+    // @ts-expect-error temporary
+    window.getUser = () => {
+      console.log(user)
+    }
+  }, [user])
+
+  const navigate = useNavigate()
+
+  const onSubmit: SubmitHandler<AuthFormValues> = async ({
+    username,
+    password,
+    remember,
+  }) => {
+    try {
+      await login({ username, password, remember })
+      navigate('/', { replace: true })
+    } catch (e) {
+      toast.error('Ошибка', {
+        description:
+          e instanceof Error ? e.message : 'При аутентификации возникла ошибка',
+      })
+    }
   }
 
   return (
@@ -39,12 +76,12 @@ export const AuthPage = () => {
 
         <div>
           <SignInInput
-            {...register('login', {
+            {...register('username', {
               required: validation.required(),
               maxLength: validation.maxLength(15),
               minLength: validation.minLength(4),
             })}
-            error={errors.login ? errors.login.message : null}
+            error={errors.username ? errors.username.message : null}
             label='Логин'
             className='mt-8'
           />

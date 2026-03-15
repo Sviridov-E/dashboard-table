@@ -1,7 +1,10 @@
 import { AuthPage } from '@/pages/auth'
 import { DashboardPage } from '@/pages/dashboard'
+import { Toaster } from '@/shared/ui/sonner'
+import { useEffect } from 'react'
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
 import './index.css'
+import { checkUser } from './lib/check-auth'
 
 const router = createBrowserRouter([
   {
@@ -9,17 +12,26 @@ const router = createBrowserRouter([
     element: <AuthPage />,
   },
   {
-    path: '/dashboard',
+    path: '/',
     element: <DashboardPage />,
   },
   {
     path: '*',
-    element: <Navigate to='/login' replace />,
+    element: <Navigate to='/' replace />,
   },
 ])
 
 function App() {
-  return <RouterProvider router={router} />
+  useEffect(() => {
+    checkUser()
+  }, [])
+
+  return (
+    <>
+      <RouterProvider router={router} />
+      <Toaster position='bottom-center' richColors />
+    </>
+  )
 }
 
 export default App

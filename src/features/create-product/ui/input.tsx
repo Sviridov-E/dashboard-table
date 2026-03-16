@@ -18,7 +18,7 @@ export const Input = ({
   const id = useId()
   return (
     <Field className={cn(className, 'gap-1')} data-invalid={!!error}>
-      <FieldLabel htmlFor={id} className='text-lg mb-0'>
+      <FieldLabel htmlFor={id} className='mb-0 text-lg'>
         {label}
       </FieldLabel>
       <div>

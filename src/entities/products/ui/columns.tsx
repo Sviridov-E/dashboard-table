@@ -13,7 +13,7 @@ const getSortableHeader =
 
     return (
       <div
-        className='flex items-center justify-center cursor-pointer hover:text-black transition-colors'
+        className='flex cursor-pointer items-center justify-center transition-colors hover:text-black'
         onClick={() => onSort(name)}
       >
         {title}
@@ -67,7 +67,7 @@ export const columns: ColumnDef<Product>[] = [
 
       if (!brand) return null
 
-      return <span className='font-bold text-base'>{brand}</span>
+      return <span className='text-base font-bold'>{brand}</span>
     },
   },
   {
@@ -119,7 +119,7 @@ export const columns: ColumnDef<Product>[] = [
       })
 
       return (
-        <span className='text-base font-mono'>
+        <span className='font-mono text-base'>
           {priceString.slice(0, -3)}
           <span className='text-neutral-4 00'>{priceString.slice(-3)}</span>
         </span>
@@ -131,8 +131,8 @@ export const columns: ColumnDef<Product>[] = [
     size: 115,
     cell: () => {
       return (
-        <div className='flex gap-8 items-center'>
-          <Button className='px-3 h-7'>
+        <div className='flex items-center gap-8'>
+          <Button className='h-7 px-3'>
             <Plus className='size-6' />
           </Button>
           <Button variant='ghost' className='h-8 w-6 p-0'>

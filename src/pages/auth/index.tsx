@@ -59,20 +59,20 @@ export const AuthPage = () => {
   if (user && idleStatus === 'done') return <Navigate to='/' />
 
   return (
-    <div className='flex min-h-screen w-screen items-center justify-center'>
-      <div className='w-131.75 rounded-4xl bg-card p-1.5  shadow-[0_24px_32px_#0000000a]'>
-        <div className='p-px rounded-[calc(var(--radius-4xl)-6px)] bg-linear-to-b from-20% from-neutral-200 to-transparent'>
+    <div className='flex min-h-screen w-screen items-center justify-center py-8'>
+      <div className='w-131.75 rounded-4xl bg-card p-1.5 shadow-[0_24px_32px_#0000000a]'>
+        <div className='rounded-[calc(var(--radius-4xl)-6px)] bg-linear-to-b from-neutral-200 from-20% to-transparent p-px'>
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className='bg-card md:px-12 px-6 py-12 flex flex-col items-center rounded-[calc(var(--radius-4xl)-7px)] bg-linear-to-b to-50% from-[#23232308] to-transparent'
+            className='flex flex-col items-center rounded-[calc(var(--radius-4xl)-7px)] bg-card bg-linear-to-b from-[#23232308] to-transparent to-50% px-6 py-12 md:px-12'
           >
             <Logo className='mb-8' />
 
-            <h1 className='text-center text-3xl md:text-[40px]/[110%] font-semibold tracking-[-0.015em] text-gray-800'>
+            <h1 className='text-center text-3xl font-semibold tracking-[-0.015em] text-gray-800 md:text-[40px]/[110%]'>
               Добро пожаловать!
             </h1>
 
-            <span className='mt-3  block text-center text-lg/6 font-medium text-gray-300'>
+            <span className='mt-3 block text-center text-lg/6 font-medium text-gray-300'>
               Пожалуйста, авторизуйтесь
             </span>
 
@@ -92,7 +92,7 @@ export const AuthPage = () => {
                     type='button'
                     variant='ghost'
                     size='sm'
-                    className='absolute right-1 top-1/2 h-12 w-12 -translate-y-1/2 active:-translate-y-1/2 p-0 hover:bg-transparent hover:text-gray-500 focus:border-none focus:ring-0! text-gray-300'
+                    className='absolute top-1/2 right-1 h-12 w-12 -translate-y-1/2 p-0 text-gray-300 hover:bg-transparent hover:text-gray-500 focus:border-none focus:ring-0! active:-translate-y-1/2'
                     onClick={() => {
                       resetField('username')
                     }}
@@ -117,7 +117,7 @@ export const AuthPage = () => {
                     type='button'
                     variant='ghost'
                     size='sm'
-                    className='absolute right-1 top-1/2 h-12 w-12 -translate-y-1/2 active:-translate-y-1/2 p-0 hover:bg-transparent hover:text-gray-500 focus:border-none focus:ring-0! text-gray-300'
+                    className='absolute top-1/2 right-1 h-12 w-12 -translate-y-1/2 p-0 text-gray-300 hover:bg-transparent hover:text-gray-500 focus:border-none focus:ring-0! active:-translate-y-1/2'
                     onClick={() => {
                       setShowPass(state => !state)
                     }}
@@ -154,11 +154,11 @@ export const AuthPage = () => {
               </Label>
             </Field>
 
-            <Button className='mt-5 w-full relative' disabled={pending}>
+            <Button className='relative mt-5 w-full' disabled={pending}>
               {pending ? <Spinner className='size-7' /> : 'Войти'}
             </Button>
 
-            <div className='mt-4 w-full flex items-center gap-2.5'>
+            <div className='mt-4 flex w-full items-center gap-2.5'>
               <hr className='grow border-gray-300' />
               <span className='shrink-0 text-base text-gray-300'>или</span>
               <hr className='grow border-gray-300' />
@@ -167,7 +167,11 @@ export const AuthPage = () => {
             <div className='mt-8'>
               <span className='text-lg text-gray-500'>
                 Нет аккаунта?
-                <Button variant='link' className=' h-auto underline'>
+                <Button
+                  variant='link'
+                  type='button'
+                  className='h-auto underline'
+                >
                   Создать
                 </Button>
               </span>

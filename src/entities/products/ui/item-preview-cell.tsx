@@ -8,22 +8,20 @@ export const ItemPreviewCell = ({
   category?: string
 }) => {
   return (
-    <div className='flex gap-4.5 items-center'>
+    <div className='flex items-center gap-4.5'>
       {thumbnail?.trim() ? (
         <img
           src={thumbnail}
           alt={title}
-          className='size-12 rounded-xl block object-cover object-center bg-neutral-200 border border-neutral-100'
+          className='block size-12 rounded-xl border border-neutral-100 bg-neutral-200 object-cover object-center'
         />
       ) : (
-        <div className='size-12 rounded-xl block bg-neutral-400 border border-neutral-200' />
+        <div className='block size-12 rounded-xl border border-neutral-200 bg-neutral-400' />
       )}
       <div>
         <span className='text-base'>{title}</span>
         {!!category?.trim() && (
-          <span className='block text-sm text-neutral-400'>
-            {category}
-          </span>
+          <span className='block text-sm text-neutral-400'>{category}</span>
         )}
       </div>
     </div>

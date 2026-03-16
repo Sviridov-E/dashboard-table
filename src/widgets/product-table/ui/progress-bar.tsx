@@ -25,7 +25,7 @@ export const ProgressBar = () => {
   return (
     <Progress
       value={value}
-      className='h-full w-full duration-300 bg-transparent rounded-none'
+      className='h-full w-full rounded-none bg-transparent duration-300'
     />
   )
 }

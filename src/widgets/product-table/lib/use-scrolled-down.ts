@@ -1,30 +1,43 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
-export const useScrolledDown = ({
-  scrollRef,
-}: {
-  scrollRef: React.RefObject<HTMLDivElement | null>
-}) => {
+export const useScrolledDown = () => {
   const [scrolledDown, setScrolledDown] = useState(
     document.documentElement.clientHeight +
       document.documentElement.scrollTop ===
       document.documentElement.scrollHeight
   )
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        // Если сенсор пересекается с низом экрана, значит мы проскроллили вниз
-        setScrolledDown(entry.isIntersecting)
-      },
-      { threshold: [1] }
-    )
 
-    if (scrollRef.current) {
-      observer.observe(scrollRef.current)
+  const observerRef = useRef<IntersectionObserver | null>(null)
+
+  const setScrollAnchorRef = useCallback((node: HTMLDivElement | null) => {
+    if (observerRef.current) {
+      observerRef.current.disconnect()
     }
+    if (node) {
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          // Если сенсор пересекается с низом экрана, значит мы проскроллили вниз
+          setScrolledDown(entry.isIntersecting)
+        },
+        {
+          threshold: [0.1],
+          rootMargin: '0px',
+        }
+      )
 
-    return () => observer.disconnect()
-  }, [scrollRef])
+      observer.observe(node)
+      observerRef.current = observer
+    }
+  }, [])
 
-  return { scrollRef, scrolledDown }
+  useEffect(
+    () => () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect()
+      }
+    },
+    []
+  )
+
+  return { setScrollAnchorRef, scrolledDown }
 }

@@ -47,7 +47,7 @@ export const ProductModal = () => {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button className='h-10.5 px-5 text-base'>
-          <PlusCircle className='size-5 mr-1' /> Добавить
+          <PlusCircle className='mr-1 size-5' /> Добавить
         </Button>
       </DialogTrigger>
       <DialogContent>

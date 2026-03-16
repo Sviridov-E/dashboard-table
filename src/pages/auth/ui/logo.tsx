@@ -3,11 +3,11 @@ import { cn } from '@/shared/lib'
 export const Logo = ({ className }: { className?: string }) => (
   <div
     className={cn(
-      'size-13 rounded-full bg-white shadow-[0_0_0_2px_#ffffff,0_12px_8px_0_#00000008] bg-linear-to-b to-70% from-[#edededb4] to-transparent',
+      'size-13 rounded-full bg-white bg-linear-to-b from-[#edededb4] to-transparent to-70% shadow-[0_0_0_2px_#ffffff,0_12px_8px_0_#00000008]',
       className
     )}
   >
-    <div className='flex justify-center items-center size-full rounded-full p-0.5 bg-white bg-linear-to-b to-50% from-[#2323230f] to-transparent'>
+    <div className='flex size-full items-center justify-center rounded-full bg-white bg-linear-to-b from-[#2323230f] to-transparent to-50% p-0.5'>
       <svg
         width='35'
         height='34'

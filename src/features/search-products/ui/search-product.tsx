@@ -23,9 +23,9 @@ export const SearchProduct = () => {
 
   return (
     <div className='relative w-full'>
-      <Search className='absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground' />
+      <Search className='absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground' />
       <Input
-        className='pl-9 h-12 bg-neutral-100 border-0 md:text-sm'
+        className='h-12 border-0 bg-neutral-100 pl-9 md:text-sm'
         placeholder='Найти'
         value={value}
         onChange={e => {
@@ -40,7 +40,7 @@ export const SearchProduct = () => {
           type='button'
           variant='ghost'
           size='sm'
-          className='absolute right-1 top-1/2 h-8 w-8 -translate-y-1/2 active:-translate-y-1/2 p-0 hover:bg-transparent hover:text-foreground'
+          className='absolute top-1/2 right-1 h-8 w-8 -translate-y-1/2 p-0 hover:bg-transparent hover:text-foreground active:-translate-y-1/2'
           onClick={() => {
             setValue('')
             debouncedSet.cancel()

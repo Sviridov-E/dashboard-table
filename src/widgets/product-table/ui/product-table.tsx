@@ -7,7 +7,6 @@ import { cn, getDeclension } from '@/shared/lib'
 import { Button, FullscreenSpinner } from '@/shared/ui'
 import { DataTable } from '@/shared/ui/data-table'
 import { RefreshCw } from 'lucide-react'
-import { useRef } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { useScrolledDown } from '../lib/use-scrolled-down'
 import { ProgressBar } from './progress-bar'
@@ -52,22 +51,21 @@ export const ProductTable = () => {
     })
   }
 
-  const scrollRef = useRef<null | HTMLDivElement>(null)
-  const { scrolledDown } = useScrolledDown({ scrollRef })
+  const { scrolledDown, setScrollAnchorRef } = useScrolledDown()
 
   if (isLoading) return <FullscreenSpinner />
 
   return (
-    <div className='pt-5 '>
-      <div className='w-screen fixed top-0 z-10'>
+    <div className='pt-5'>
+      <div className='fixed top-0 z-10 w-screen'>
         {isFetching && (
           <div className='h-2'>
             <ProgressBar />
           </div>
         )}
       </div>
-      <div className='md:h-25 md:py-0 py-4  bg-card flex gap-4 md:items-center justify-center md:px-8 px-4 relative md:flex-row flex-col'>
-        <h2 className='text-2xl font-bold md:absolute left-8 top-0 bottom-0 flex items-center'>
+      <div className='relative flex flex-col justify-center gap-4 bg-card px-4 py-4 md:h-25 md:flex-row md:items-center md:px-8 md:py-0'>
+        <h2 className='top-0 bottom-0 left-8 flex items-center text-2xl font-bold md:absolute'>
           Товары
         </h2>
         <div className='md:w-5xl md:max-w-[calc(100vw-510px)]'>
@@ -76,9 +74,9 @@ export const ProductTable = () => {
       </div>
 
       <div className='mt-8 bg-card'>
-        <div className='md:mb-4 md:p-8 p-4 md:gap-0 gap-4 flex justify-between flex-col-reverse md:flex-row md:items-center'>
-          <h2 className='text-xl font-bold  '>Все позиции</h2>
-          <div className='flex gap-2 justify-between md:justify-normal'>
+        <div className='flex flex-col-reverse justify-between gap-4 p-4 md:mb-4 md:flex-row md:items-center md:gap-0 md:p-8'>
+          <h2 className='text-xl font-bold'>Все позиции</h2>
+          <div className='flex justify-between gap-2 md:justify-normal'>
             <Button
               onClick={() => refetch()}
               variant='outline'
@@ -90,7 +88,7 @@ export const ProductTable = () => {
           </div>
         </div>
 
-        <div className='w-full md:px-8 px-4 overflow-x-auto min-h-[calc(100vh-385px)]'>
+        <div className='min-h-[calc(100vh-385px)] w-full overflow-x-auto px-4 md:px-8'>
           <DataTable
             columns={columns}
             data={data?.products ?? []}
@@ -103,24 +101,24 @@ export const ProductTable = () => {
 
         <div
           className={cn(
-            'md:py-10 py-6 px-8 md:sticky bottom-0 bg-card transition-shadow',
-            !scrolledDown && 'md:shadow-lg shadow-black'
+            'bottom-0 bg-card px-8 py-6 transition-shadow md:sticky md:py-10',
+            !scrolledDown && 'shadow-black md:shadow-lg'
           )}
         >
-          <div className='flex items-center justify-between flex-col-reverse gap-4 md:flex-row'>
-            <div className='text-lg text-muted-foreground whitespace-nowrap md:min-h-7'>
+          <div className='flex flex-col-reverse items-center justify-between gap-4 md:flex-row'>
+            <div className='text-lg whitespace-nowrap text-muted-foreground md:min-h-7'>
               {!!data?.products.length && (
                 <>
                   {getDeclension(
                     ['Показан', 'Показано', 'Показано'],
                     data.products.length
                   )}
-                  <span className='text-foreground px-2'>
+                  <span className='px-2 text-foreground'>
                     {data.products.length === 1
                       ? '1'
                       : `${(page - 1) * LIMIT + 1}-${Math.min(data?.total || 0, page * LIMIT)}`}
                   </span>
-                  из<span className='text-foreground px-2'>{data?.total}</span>
+                  из<span className='px-2 text-foreground'>{data?.total}</span>
                 </>
               )}
             </div>
@@ -133,7 +131,7 @@ export const ProductTable = () => {
           </div>
         </div>
 
-        <div ref={scrollRef} className='relative h-px w-full' />
+        <div ref={setScrollAnchorRef} className='relative h-px w-full' />
       </div>
     </div>
   )

@@ -54,7 +54,7 @@ export function DataTable<TData, TValue>({
                 key={header.id}
                 className={cn(
                   'overflow-hidden',
-                  'text-base font-bold py-6 text-neutral-300',
+                  'py-6 text-base font-bold text-neutral-300',
                   header.id !== 'title' && 'text-center',
                   !index && 'pl-4'
                 )}
@@ -81,7 +81,7 @@ export function DataTable<TData, TValue>({
       <TableBody
         className={cn(
           'transition-[filter]',
-          isFetching && 'blur-sm opacity-50'
+          isFetching && 'opacity-50 blur-sm'
         )}
       >
         {data.length ? (
@@ -100,7 +100,7 @@ export function DataTable<TData, TValue>({
                     // Индикатор выбранной строки
                     'relative',
                     index === 0 &&
-                      'pl-4 group-data-[state=selected]:before:absolute group-data-[state=selected]:before:left-0 group-data-[state=selected]:before:top-0 group-data-[state=selected]:before:h-full group-data-[state=selected]:before:w-0.75 group-data-[state=selected]:before:bg-primary'
+                      'pl-4 group-data-[state=selected]:before:absolute group-data-[state=selected]:before:top-0 group-data-[state=selected]:before:left-0 group-data-[state=selected]:before:h-full group-data-[state=selected]:before:w-0.75 group-data-[state=selected]:before:bg-primary'
                   )}
                   style={{
                     width:

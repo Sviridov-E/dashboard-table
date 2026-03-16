@@ -21,23 +21,23 @@ export const TablePagination = ({
 
   return (
     <Pagination>
-      <PaginationContent className='gap-2 w-full justify-between md:w-auto md:justify-normal'>
+      <PaginationContent className='w-full justify-between gap-2 md:w-auto md:justify-normal'>
         <PaginationItem className={cn(page === 1 && 'md:hidden')}>
           <PaginationPrevious
             onClick={() => handlePageChange(Math.max(1, page - 1))}
-            className='text-neutral-500 size-10 md:size-7.5 rounded-sm md:mr-1 md:border-0 border border-neutral-400'
+            className='size-10 rounded-sm border border-neutral-400 text-neutral-500 md:mr-1 md:size-7.5 md:border-0'
           />
         </PaginationItem>
 
         {Array.from({ length: totalPages }).map((_, i) => {
           const isActive = page === i + 1
           return (
-            <PaginationItem key={i} className='md:block hidden'>
+            <PaginationItem key={i} className='hidden md:block'>
               <PaginationLink
                 className={cn(
-                  'size-7.5 border border-neutral-300 text-sm text-neutral-400 rounded-sm',
+                  'size-7.5 rounded-sm border border-neutral-300 text-sm text-neutral-400',
                   isActive &&
-                    'border-none text-white bg-indigo-400 hover:text-white hover:bg-indigo-400'
+                    'border-none bg-indigo-400 text-white hover:bg-indigo-400 hover:text-white'
                 )}
                 isActive={isActive}
                 onClick={() => handlePageChange(i + 1)}
@@ -51,7 +51,7 @@ export const TablePagination = ({
         <PaginationItem className={cn(page === totalPages && 'md:hidden')}>
           <PaginationNext
             onClick={() => handlePageChange(Math.min(totalPages, page + 1))}
-            className='text-neutral-500 size-10 md:size-7.5 rounded-sm md:ml-1 md:border-0 border border-neutral-400'
+            className='size-10 rounded-sm border border-neutral-400 text-neutral-500 md:ml-1 md:size-7.5 md:border-0'
           />
         </PaginationItem>
       </PaginationContent>

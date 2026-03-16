@@ -9,6 +9,7 @@ const createdProductSchema = z.object({
   price: z.number(),
   brand: z.string().optional(),
   rating: z.number().optional(),
+  sku: z.string().optional(),
 })
 
 export type NewProduct = z.infer<typeof createdProductSchema>

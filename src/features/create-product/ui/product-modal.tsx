@@ -87,6 +87,17 @@ export const ProductModal = () => {
           />
 
           <Input
+            {...register('sku', {
+              required: validation.required(),
+              maxLength: validation.maxLength(20),
+            })}
+            placeholder='FRA-CHA-CHA-007'
+            label='Артикул'
+            error={errors.sku ? errors.sku.message : null}
+            className='space-y-1'
+          />
+
+          <Input
             {...register('price', {
               required: validation.required(),
               min: validation.min(0),

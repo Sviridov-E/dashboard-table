@@ -25,11 +25,19 @@ export const login = async ({
     }),
   })
 
-  if (!res.ok) {
-    throw authError
+  let json: unknown = null
+  try {
+    json = await res.json()
+  } catch {
+    json = null
   }
-
-  const json = await res.json()
+  if (!res.ok) {
+    const message =
+      json !== null && typeof json === 'object' && 'message' in json
+        ? (json.message as string)
+        : authError.message
+    throw new Error(message)
+  }
 
   try {
     const { username, id, accessToken, refreshToken } = z

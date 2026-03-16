@@ -1,28 +1,29 @@
-# Stage 1: Сборка
+# Stage 1: Build
 FROM node:20-alpine AS build
-
-# Устанавливаем pnpm через corepack
 RUN corepack enable && corepack prepare pnpm@latest --activate
-
 WORKDIR /app
-
-# Копируем файлы зависимостей
 COPY pnpm-lock.yaml package.json ./
-
-# Устанавливаем зависимости (frozen-lockfile гарантирует соответствие локфайлу)
 RUN pnpm install --frozen-lockfile
-
-# Копируем остальной код и билдим
 COPY . .
 RUN pnpm run build
 
-# Stage 2: Раздача статики (Nginx)
+# Stage 2: Production
 FROM nginx:stable-alpine
 
-# Копируем наш кастомный конфиг в папку Nginx
-COPY nginx.conf /etc/nginx/nginx.conf
+RUN echo 'server { \
+    listen 8080; \
+    location / { \
+        root /usr/share/nginx/html; \
+        index index.html; \
+        try_files $uri $uri/ /index.html; \
+    } \
+    location /api/ { \
+        proxy_pass https://dummyjson.com/; \
+        proxy_set_header Host dummyjson.com; \
+        proxy_ssl_server_name on; \
+    } \
+}' > /etc/nginx/conf.d/default.conf
 
-# Копируем билд из первого стейджа
 COPY --from=build /app/dist /usr/share/nginx/html
 
 EXPOSE 8080

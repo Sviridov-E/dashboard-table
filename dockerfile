@@ -19,11 +19,14 @@ RUN pnpm run build
 # Stage 2: Раздача статики (Nginx)
 FROM nginx:stable-alpine
 
+# ГАРАНТИРОВАННО удаляем все стандартные конфиги
+RUN rm /etc/nginx/conf.d/*
+
 # Копируем наш кастомный конфиг в папку Nginx
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Копируем билд из первого стейджа
 COPY --from=build /app/dist /usr/share/nginx/html
 
-EXPOSE 80
+EXPOSE 8080
 CMD ["nginx", "-g", "daemon off;"]

@@ -13,8 +13,10 @@ export const SearchProduct = () => {
   const debouncedSet = useDebouncedCallback((value: string) => {
     setSearchParams(searchParams => {
       const resultParams = new URLSearchParams(searchParams)
-      if (value.trim()) resultParams.set('q', value)
-      else resultParams.delete('q')
+      if (value.trim()) {
+        resultParams.set('q', value)
+        resultParams.delete('page')
+      } else resultParams.delete('q')
       return resultParams
     })
   }, 700)

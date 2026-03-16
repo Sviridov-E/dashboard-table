@@ -112,7 +112,11 @@ export const columns: ColumnDef<Product>[] = [
 
       if (!price) return null
 
-      const priceString = price.toLocaleString('ru-RU', { currency: 'RUB' })
+      const priceString = price.toLocaleString('ru-RU', {
+        currency: 'RUB',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })
 
       return (
         <span className='text-base font-mono'>

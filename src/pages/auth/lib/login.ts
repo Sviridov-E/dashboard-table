@@ -17,8 +17,11 @@ export const login = async ({
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       ...loginData,
-      // если не запоминаем, то куки не используем и храним токены в памяти
-      expiresInMins: remember ? 60 : 0,
+      /**
+       * куки не используем и храним токены в памяти, т.к. доступа к серверу у нас нет
+       * и мы не сможем удалить куки при "гостевом" режиме
+       */
+      expiresInMins: 0,
     }),
   })
 
@@ -40,9 +43,9 @@ export const login = async ({
 
     useUserStore.getState().login({ username, id })
 
-    if (!remember) {
-      useSessionAuthStore.getState().login({ accessToken, refreshToken })
-    }
+    useSessionAuthStore
+      .getState()
+      .login({ accessToken, refreshToken }, remember)
   } catch (e) {
     if (e instanceof Error) console.error(e.message)
     throw authError

@@ -16,7 +16,7 @@ export const ItemPreviewCell = ({
           className='size-12 rounded-xl block object-cover object-center bg-neutral-200 border border-neutral-100'
         />
       ) : (
-        <div className='size-12 rounded-3xl block bg-neutral-400 border border-neutral-200' />
+        <div className='size-12 rounded-xl block bg-neutral-400 border border-neutral-200' />
       )}
       <div>
         <span className='text-base'>{title}</span>

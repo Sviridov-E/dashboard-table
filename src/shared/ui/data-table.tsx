@@ -21,6 +21,7 @@ interface DataTableProps<TData, TValue> {
   onSort: (field: string) => void
   sort: string | null
   order: 'asc' | 'desc'
+  isFetching: boolean
 }
 
 export function DataTable<TData, TValue>({
@@ -29,6 +30,7 @@ export function DataTable<TData, TValue>({
   onSort,
   sort,
   order,
+  isFetching,
 }: DataTableProps<TData, TValue>) {
   // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
@@ -76,7 +78,12 @@ export function DataTable<TData, TValue>({
           </TableRow>
         ))}
       </TableHeader>
-      <TableBody>
+      <TableBody
+        className={cn(
+          'transition-[filter]',
+          isFetching && 'blur-sm opacity-50'
+        )}
+      >
         {data.length ? (
           table.getRowModel().rows.map(row => (
             <TableRow

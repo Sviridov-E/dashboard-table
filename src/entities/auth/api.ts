@@ -7,12 +7,11 @@ export const refresh = (() => {
   let cacheRefreshPromise: Promise<string> | null = null
 
   const fn = async () => {
-    const { refreshToken } = useSessionAuthStore.getState()
+    const { refreshToken, rememberMe } = useSessionAuthStore.getState()
 
     const response = await fetch('/api/auth/refresh', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      credentials: refreshToken ? 'omit' : 'include',
       body: refreshToken
         ? JSON.stringify({
             refreshToken,
@@ -35,9 +34,7 @@ export const refresh = (() => {
       .parse(json)
 
     // если храним токены локально без кук
-    if (refreshToken) {
-      useSessionAuthStore.getState().login(newTokens)
-    }
+    useSessionAuthStore.getState().login(newTokens, rememberMe)
 
     return newTokens.accessToken
   }
@@ -63,31 +60,19 @@ export const authFetch = async <T extends object>(
 
   let response = await fetch(url, {
     ...params,
-    ...(accessToken
-      ? {
-          // Кладём токен в header
-          headers: {
-            ...DEFAULT_HEADERS,
-            Authorization: `Bearer ${accessToken}`,
-            ...(params?.headers || {}),
-          },
-        }
-      : {
-          // Используем токены из cookies
-          credentials: 'include',
-          headers: { ...DEFAULT_HEADERS, ...(params?.headers || {}) },
-        }),
+    // Кладём токен в header
+    headers: {
+      ...DEFAULT_HEADERS,
+      Authorization: `Bearer ${accessToken}`,
+      ...(params?.headers || {}),
+    },
   })
 
   if (response.status === 401) {
-    const json = await response.json()
-
     /**
-     * В реально жизни - плохо полагаться на message,
-     * но т.к. мы работаем с dummyjson, то будем полагаться на это
-     * чтобы не кидать запрос на refresh, если access_token нет в куках
+     * Если при 401 accessToken вовсе нет - значит нужно заного войти в систему
      */
-    if (json.message === 'Access Token is required') {
+    if (!accessToken) {
       throw new Error('Необходимо заного пройти аутентификацию')
     }
     try {
@@ -104,9 +89,8 @@ export const authFetch = async <T extends object>(
       })
     } catch (refreshError) {
       if (refreshError instanceof Error) {
-        console.log(refreshError.message)
+        console.error(refreshError.message)
       }
-      // useSessionAuthStore.getState().logout();
       throw refreshError
     }
   }
@@ -120,9 +104,7 @@ export const authFetch = async <T extends object>(
 
     return json as T
   } catch (error) {
-    if (error instanceof Error)
-      // useSessionAuthStore.getState().logout();
-      throw error
+    if (error instanceof Error) throw error
   }
 }
 

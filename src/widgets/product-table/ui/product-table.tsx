@@ -6,8 +6,9 @@ import { SearchProduct } from '@/features/search-products'
 import { cn, getDeclension } from '@/shared/lib'
 import { Button, FullscreenSpinner } from '@/shared/ui'
 import { DataTable } from '@/shared/ui/data-table'
-import { RefreshCw } from 'lucide-react'
+import { LogOut, RefreshCw } from 'lucide-react'
 import { useSearchParams } from 'react-router-dom'
+import { useLogout } from '../lib/use-logout'
 import { useScrolledDown } from '../lib/use-scrolled-down'
 import { ProgressBar } from './progress-bar'
 import { TablePagination } from './table-pagination'
@@ -22,6 +23,8 @@ export const ProductTable = () => {
   const sort = searchParams.get('sortBy') || null
   const order = (searchParams.get('order') || 'asc') as SortDirection
   const query = searchParams.get('q') || null
+
+  const logout = useLogout()
 
   const { data, isLoading, isFetching, refetch } = useProducts(authFetch, {
     countPerPage: LIMIT,
@@ -71,6 +74,13 @@ export const ProductTable = () => {
         <div className='md:w-5xl md:max-w-[calc(100vw-510px)]'>
           <SearchProduct />
         </div>
+        <Button
+          variant='outline'
+          className='absolute top-3 right-4 flex size-10 items-center font-bold md:top-auto md:right-8 md:size-12'
+          onClick={logout}
+        >
+          <LogOut className='size-4 md:size-6' />
+        </Button>
       </div>
 
       <div className='mt-8 bg-card'>
